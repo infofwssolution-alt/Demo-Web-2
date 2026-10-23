@@ -43,7 +43,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenBook
           {FACILITIES_DATA.map((facility) => (
             <div
               key={facility.id}
-              className="bg-white rounded-2xl p-8 border border-slate-200/90 shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between group text-left"
+              className="bg-white rounded-2xl p-8 border border-slate-200/90 shadow-sm hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between h-full group text-left"
             >
               <div>
                 {/* Visual Icon Badge */}
@@ -94,7 +94,7 @@ export const FacilitiesSection: React.FC<FacilitiesSectionProps> = ({ onOpenBook
         <div className="mt-14 text-center">
           <button
             onClick={onOpenBooking}
-            className="px-8 py-3.5 rounded-[4px] bg-[#0f57fb] hover:bg-[#21252f] text-white font-semibold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 inline-flex items-center gap-2 cursor-pointer"
+            className="px-8 py-3.5 rounded-xl bg-[#0f57fb] hover:bg-[#21252f] text-white font-semibold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 inline-flex items-center gap-2 cursor-pointer active:scale-95"
           >
             <span>All Facilities & Tours →</span>
           </button>

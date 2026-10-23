@@ -3,13 +3,19 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { NAV_ITEMS, HOSPITAL_CONTACT } from "@/data/hospital-data";
-import { Eye, Menu, X, ChevronDown, Phone, Clock, Calendar } from "lucide-react";
+import { Eye, Menu, X, ChevronDown, Phone, Clock, Calendar, GripVertical } from "lucide-react";
 
 interface NavbarProps {
   onOpenBooking: () => void;
+  onToggleDragMode?: () => void;
+  isDragMode?: boolean;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  onOpenBooking,
+  onToggleDragMode,
+  isDragMode = false,
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -30,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
     <>
       {/* Top Utility Bar */}
       <div className="bg-[#00123A] text-slate-300 text-xs hidden lg:block border-b border-blue-950/60">
-        <div className="max-w-[1240px] mx-auto px-6 py-2 flex items-center justify-between">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5 hover:text-white transition-colors">
               <Clock className="w-3.5 h-3.5 text-[#0f57fb]" />
@@ -41,8 +47,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
               <span>Emergency Retina: (021) 34531810</span>
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5">
             <span className="text-slate-400">187-B, P.E.C.H.S Block 2, Karachi</span>
+            {onToggleDragMode && (
+              <button
+                onClick={onToggleDragMode}
+                className="flex items-center gap-1 text-xs text-[#BFD1FF] hover:text-white transition-colors cursor-pointer font-semibold px-2 py-0.5 rounded bg-blue-900/40 hover:bg-blue-800/60"
+              >
+                <GripVertical className="w-3 h-3 text-emerald-400" />
+                <span>{isDragMode ? "Exit Drag Mode" : "Drag & Drop Layout"}</span>
+              </button>
+            )}
             <button
               onClick={onOpenBooking}
               className="text-[#BFD1FF] hover:text-white underline underline-offset-2 transition-colors cursor-pointer"
@@ -58,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-md shadow-md py-3.5 border-b border-slate-100"
-            : "bg-white py-5 border-b border-slate-100"
+            : "bg-white py-4 sm:py-5 border-b border-slate-100"
         }`}
       >
         <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -129,10 +144,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
           </nav>
 
           {/* Header Action Button */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
+            {onToggleDragMode && (
+              <button
+                onClick={onToggleDragMode}
+                className={`inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer border ${
+                  isDragMode
+                    ? "bg-blue-600 text-white border-blue-500 shadow-sm"
+                    : "bg-slate-50 text-[#00123A] border-slate-200 hover:border-[#0f57fb] hover:text-[#0f57fb]"
+                }`}
+                title="Toggle Drag & Drop layout customization mode"
+              >
+                <GripVertical className="w-3.5 h-3.5 text-blue-500" />
+                <span>{isDragMode ? "Drag Mode Active" : "Drag & Drop"}</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenBooking}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[4px] bg-[#0f57fb] hover:bg-[#21252f] text-white text-sm font-semibold tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#0f57fb] hover:bg-[#21252f] text-white text-sm font-semibold tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
               <span>Book Appointment now →</span>
@@ -141,19 +171,34 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
           {/* Mobile Menu Trigger */}
           <div className="flex items-center gap-2 lg:hidden">
+            {onToggleDragMode && (
+              <button
+                onClick={onToggleDragMode}
+                className={`h-10 px-2.5 rounded-xl text-xs font-bold flex items-center gap-1 border transition-all ${
+                  isDragMode
+                    ? "bg-blue-600 text-white border-blue-500"
+                    : "bg-blue-50 text-[#0f57fb] border-blue-200"
+                }`}
+                title="Toggle Drag & Drop Mode"
+              >
+                <GripVertical className="w-3.5 h-3.5" />
+                <span className="hidden xs:inline">Drag</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenBooking}
-              className="p-2 rounded-lg bg-[#0f57fb] text-white text-xs font-semibold px-3 py-2 flex items-center gap-1.5"
+              className="h-10 px-3.5 rounded-xl bg-[#0f57fb] text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm active:scale-95 cursor-pointer"
             >
               <Calendar className="w-3.5 h-3.5" />
               <span>Book</span>
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-lg border border-slate-200 text-[#00123A] hover:bg-slate-100 transition-colors"
+              className="h-10 w-10 rounded-xl border border-slate-200 text-[#00123A] hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
               aria-label="Toggle Navigation Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -166,7 +211,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-slate-100">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-[#0f57fb] flex items-center justify-center text-white">
+                  <div className="w-9 h-9 rounded-xl bg-[#0f57fb] flex items-center justify-center text-white">
                     <Eye className="w-5 h-5" />
                   </div>
                   <div className="flex flex-col text-left">
@@ -176,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
                 </div>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-2 rounded-lg text-slate-500 hover:text-slate-900"
+                  className="p-2 rounded-lg text-slate-500 hover:text-slate-900 cursor-pointer"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -214,18 +259,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
 
             {/* Mobile Footer CTAs */}
             <div className="pt-6 border-t border-slate-100 space-y-3">
+              {onToggleDragMode && (
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onToggleDragMode();
+                  }}
+                  className="w-full py-2.5 rounded-xl border border-blue-200 bg-blue-50 text-[#0f57fb] font-bold text-center text-xs flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <GripVertical className="w-4 h-4" />
+                  <span>{isDragMode ? "Exit Drag & Drop Mode" : "Enable Drag & Drop Layout"}</span>
+                </button>
+              )}
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenBooking();
                 }}
-                className="w-full py-3 rounded-md bg-[#0f57fb] text-white font-semibold text-center text-sm shadow-md"
+                className="w-full py-3 rounded-xl bg-[#0f57fb] text-white font-semibold text-center text-sm shadow-md cursor-pointer"
               >
                 Book Appointment now →
               </button>
               <a
                 href="tel:02134531810"
-                className="w-full py-2.5 rounded-md border border-slate-200 text-[#00123A] font-medium text-center text-sm flex items-center justify-center gap-2 hover:bg-slate-50"
+                className="w-full py-2.5 rounded-xl border border-slate-200 text-[#00123A] font-medium text-center text-sm flex items-center justify-center gap-2 hover:bg-slate-50"
               >
                 <Phone className="w-4 h-4 text-[#0f57fb]" />
                 <span>Call Hotline (021) 34531810</span>

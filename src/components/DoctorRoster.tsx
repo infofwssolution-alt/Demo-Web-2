@@ -76,7 +76,7 @@ export const DoctorRoster: React.FC<DoctorRosterProps> = ({ onSelectDoctorForBoo
                       <div className="text-xs font-bold text-[#00123A] uppercase tracking-wider mb-2">
                         Accreditations & Degrees:
                       </div>
-                      <div className="flex flex-wrap gap-1.5">
+                      <div className="flex flex-wrap gap-1.5 min-h-[56px]">
                         {doctor.qualifications.map((q) => (
                           <span
                             key={q}
@@ -89,12 +89,12 @@ export const DoctorRoster: React.FC<DoctorRosterProps> = ({ onSelectDoctorForBoo
                     </div>
 
                     {/* Biography */}
-                    <p className="text-xs text-slate-600 leading-relaxed min-h-[56px]">
+                    <p className="text-xs text-slate-600 leading-relaxed min-h-[64px]">
                       {doctor.description}
                     </p>
 
                     {/* Availability */}
-                    <div className="pt-2 flex items-center gap-2 text-xs text-[#00123A] font-semibold bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                    <div className="pt-2 flex items-center gap-2 text-xs text-[#00123A] font-semibold bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                       <Clock className="w-4 h-4 text-[#0f57fb] shrink-0" />
                       <span>OPD: {doctor.availability}</span>
                     </div>
@@ -102,10 +102,10 @@ export const DoctorRoster: React.FC<DoctorRosterProps> = ({ onSelectDoctorForBoo
                 </div>
 
                 {/* Action Button */}
-                <div className="p-6 pt-0">
+                <div className="p-6 pt-0 mt-auto">
                   <button
                     onClick={() => onSelectDoctorForBooking(doctor.name)}
-                    className="w-full py-3.5 rounded-lg bg-[#0f57fb] hover:bg-[#21252f] text-white font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
+                    className="w-full py-3.5 rounded-xl bg-[#0f57fb] hover:bg-[#21252f] text-white font-bold text-xs uppercase tracking-wider transition-all duration-200 shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 cursor-pointer active:scale-95"
                   >
                     <Calendar className="w-4 h-4" />
                     <span>Book with {doctor.name}</span>
