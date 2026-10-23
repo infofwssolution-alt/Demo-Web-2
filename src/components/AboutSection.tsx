@@ -96,14 +96,14 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onOpenBooking }) => 
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <button
                 onClick={onOpenBooking}
-                className="px-7 py-3.5 rounded-[4px] bg-[#0f57fb] hover:bg-[#21252f] text-white font-semibold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 inline-flex items-center gap-2 cursor-pointer"
+                className="px-7 py-3.5 rounded-xl bg-[#0f57fb] hover:bg-[#21252f] text-white font-semibold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 inline-flex items-center gap-2 cursor-pointer active:scale-95"
               >
                 <span>Read More & Consult</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <a
                 href="#facilities"
-                className="px-6 py-3.5 rounded-[4px] border border-slate-200 hover:border-[#0f57fb] text-[#00123A] font-semibold text-sm transition-colors"
+                className="px-6 py-3.5 rounded-xl border border-slate-200 hover:border-[#0f57fb] text-[#00123A] font-semibold text-sm transition-colors inline-flex items-center"
               >
                 Explore Facilities
               </a>

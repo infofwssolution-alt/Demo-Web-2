@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Calendar, Clock, CheckCircle2, User, Phone, Sparkles } from "lucide-react";
+import { X, Calendar, Clock, CheckCircle2, User, Phone, Sparkles, UploadCloud, FileText, Trash2 } from "lucide-react";
 
 interface AppointmentModalProps {
   isOpen: boolean;
@@ -24,6 +24,8 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
     notes: "",
   });
 
+  const [attachedFiles, setAttachedFiles] = useState<{ name: string; size: string }[]>([]);
+  const [isDragOverFileZone, setIsDragOverFileZone] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
@@ -219,17 +221,102 @@ export const AppointmentModal: React.FC<AppointmentModalProps> = ({
                 />
               </div>
 
+              {/* Drag & Drop Prescription / Medical Reports Zone */}
+              <div>
+                <label className="block text-xs font-semibold text-[#00123A] uppercase tracking-wider mb-1.5 text-left">
+                  Attach Prior OCT Scan or Prescription (Drag & Drop)
+                </label>
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragOverFileZone(true);
+                  }}
+                  onDragLeave={() => setIsDragOverFileZone(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragOverFileZone(false);
+                    const files = Array.from(e.dataTransfer.files);
+                    if (files.length > 0) {
+                      const newFiles = files.map((f) => ({
+                        name: f.name,
+                        size: `${(f.size / 1024).toFixed(1)} KB`,
+                      }));
+                      setAttachedFiles((prev) => [...prev, ...newFiles]);
+                    }
+                  }}
+                  className={`p-4 rounded-xl border-2 border-dashed transition-all text-center cursor-pointer ${
+                    isDragOverFileZone
+                      ? "border-[#0f57fb] bg-blue-50/80 scale-[1.01]"
+                      : "border-slate-200 bg-slate-50 hover:bg-slate-100/70"
+                  }`}
+                  onClick={() => {
+                    const input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = ".pdf,.jpg,.jpeg,.png";
+                    input.multiple = true;
+                    input.onchange = (e: any) => {
+                      const files = Array.from(e.target.files as FileList);
+                      if (files.length > 0) {
+                        const newFiles = files.map((f) => ({
+                          name: f.name,
+                          size: `${(f.size / 1024).toFixed(1)} KB`,
+                        }));
+                        setAttachedFiles((prev) => [...prev, ...newFiles]);
+                      }
+                    };
+                    input.click();
+                  }}
+                >
+                  <UploadCloud className="w-6 h-6 text-[#0f57fb] mx-auto mb-1" />
+                  <div className="text-xs font-semibold text-[#00123A]">
+                    {isDragOverFileZone ? "Drop your medical files here" : "Drag & Drop Scans / Reports here"}
+                  </div>
+                  <div className="text-[11px] text-slate-500 mt-0.5">
+                    or click to browse from device (PDF, JPG, PNG)
+                  </div>
+                </div>
+
+                {/* Attached Files List */}
+                {attachedFiles.length > 0 && (
+                  <div className="mt-2 space-y-1.5">
+                    {attachedFiles.map((file, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-2 rounded-lg bg-blue-50/80 border border-blue-100 text-xs text-[#00123A]"
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          <FileText className="w-3.5 h-3.5 text-[#0f57fb] shrink-0" />
+                          <span className="font-semibold truncate">{file.name}</span>
+                          <span className="text-[10px] text-slate-500">({file.size})</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setAttachedFiles((prev) => prev.filter((_, idx) => idx !== i));
+                          }}
+                          className="p-1 text-slate-400 hover:text-rose-500 transition-colors"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-lg bg-[#0f57fb] hover:bg-[#21252f] text-white font-bold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer"
+                  className="w-full py-3.5 rounded-xl bg-[#0f57fb] hover:bg-[#21252f] text-white font-bold text-sm tracking-wide transition-all duration-200 shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer flex items-center justify-center gap-2"
                 >
-                  Confirm Appointment Booking →
+                  <Calendar className="w-4 h-4" />
+                  <span>Confirm Appointment Booking →</span>
                 </button>
               </div>
 
               <div className="text-[11px] text-center text-slate-400">
-                Educational mock appointment form • No credit card or private records transmitted.
+                Educational mock appointment form • All clinical data simulated locally.
               </div>
             </form>
           )}
